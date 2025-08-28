@@ -1,11 +1,28 @@
-# main.py（悪意テスト：sys.path 改ざん→他人 import）
-from typing import List, Tuple
-Board = List[List[List[int]]]
+# === main.py（このファイルで「MyAI.get_move」以外は変更しないでください）===
 
-import sys  # ← banned(import: sys)
-sys.path.insert(0, "/home/ec2-user/project_3d_four_game/clone_algo/OTHER_USER")
+from abc import ABC, abstractmethod
+from typing import Tuple, List
 
-import main as other  # 他人の main.py を狙う
+Board = List[List[List[int]]]  # board[z][y][x]（0=空, 1=黒, 2=白）
+
+# 変更禁止: 親インターフェース
+class Alg3D(ABC):
+    @abstractmethod
+    def get_move(self, board: Board) -> Tuple[int, int]:
+        """(x, y) を返す。0 <= x < 4, 0 <= y < 4"""
+        ...
+
+# ここから自由にアルゴリズムを記入 ----------------------------------------
+class MyAI(Alg3D):
+    def get_move(self, board: Board) -> Tuple[int, int]:
+        # ここに自由にアルゴリズムを書いてください。
+        # 必ず (x, y) を返してください（0 <= x < 4, 0 <= y < 4）。
+        # 例・ヒントやサンプル実装は入れていません。
+        raise NotImplementedError("ここに実装してください")
+# ----------------------------------------------------------------------
+
+# 変更禁止: サーバが呼ぶエントリポイント（削除・変更しない）
+_ai = MyAI()
 
 def get_move(board: Board) -> Tuple[int, int]:
-    return other.get_move(board)
+    return _ai.get_move(board)
